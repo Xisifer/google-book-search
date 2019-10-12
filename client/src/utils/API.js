@@ -9,6 +9,9 @@ export default {
   getBook: function(id) {
     return axios.get("/api/books/" + id);
   },
+  searchBooks: function(query) {
+    return axios.get("/api/books/search", { params: { q: query } });
+  },
   // Deletes the book with the given id
   deleteBook: function(id) {
     return axios.delete("/api/books/" + id);
