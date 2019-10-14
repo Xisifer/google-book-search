@@ -10,8 +10,11 @@ export default {
     return axios.get("/api/books/" + id);
   },
   searchBooks: function(query) {
-    return axios.get("/api/books/search", { params: { q: query } });
+    return axios.get("/api/google?q=" + query);
   },
+  // searchBooks: function(query) {
+  //   return axios.get("/google/search?q=" + query);
+  // },
   // Deletes the book with the given id
   deleteBook: function(id) {
     return axios.delete("/api/books/" + id);

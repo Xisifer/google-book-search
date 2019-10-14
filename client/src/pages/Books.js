@@ -4,18 +4,20 @@ import API from "../utils/API";
 import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
-import { Input, TextArea, FormBtn } from "../components/Form";
+import { Input } from "../components/Form";
+// import { TextArea, FormBtn } from "../components/Form";
 import Button from "../components/Button";
 import { BookList, BookListItem } from "../components/BookList";
 
 class Books extends Component {
   state = {
-    books: []
-    // bookSearch: ""
+    favBooks: [],
+    favBooks: [],
+    bookSearch: ""
   };
 
-  componentDidMount() {
-    this.loadBooks();
+  componentDidMount = () => {
+    // this.loadBooks();
   }
 
   loadBooks = () => {
@@ -24,11 +26,11 @@ class Books extends Component {
       .catch(err => console.log(err));
   };
 
-  // searchBooks = (searchQuery) => {
-  //   API.searchBooks(searchQuery)
-  //     .then(res => this.setState({ books: res.data }))
-  //     .catch(err => console.log(err));
-  // }
+  searchBooks = (searchQuery) => {
+    API.searchBooks(searchQuery)
+      .then(res => this.setState({ favBooks: res.data }))
+      .catch(err => console.log(err));
+  }
 
   // handleInputChange = event => {
   //   // Destructure the name and value properties off of event.target
@@ -39,11 +41,19 @@ class Books extends Component {
   //   });
   // };
 
+  handleInputChange = event => {
+    // Destructure the name and value properties off of event.target
+    // Update the appropriate state
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
   
-  handleFormSubmit = event => {
+  handleFormSubmit = (event) => {
     // When the form is submitted, prevent its default behavior, get recipes update the recipes state
     event.preventDefault();
-    console.log(this.state.books);
+    console.log(this.state.favBooks);
     API.searchBooks(this.state.bookSearch)
       .then(res => this.setState({ books: res.data }))
       .catch(err => console.log(err));
@@ -58,9 +68,9 @@ class Books extends Component {
               <h1>Search for a Book!</h1>
             </Jumbotron>
             <Input
-              name="recipeSearch"
+              name="bookSearch"
               value={this.state.bookSearch}
-              // onChange={this.handleInputChange}
+              onChange={this.handleInputChange}
               placeholder="Search For a Book"
             />
             <Button
@@ -85,17 +95,17 @@ class Books extends Component {
             <Jumbotron>
               <h1>Search Results</h1>
             </Jumbotron>
-              {!this.state.books.length ? (
+              {!this.state.favBooks.length ? (
                 <h1 className="text-center">No Results to Display</h1>
               ) : (
                 <BookList>
-                  {this.state.books.map(book => {
+                  {this.state.favBooks.map(book => {
                     return (
                       <BookListItem
-                        key={book.title}
-                        title={book.title}
+                        key={book.id}
+                        title={book.volumeInfo.title}
                         href={book.href}
-                        ingredients={book.ingredients}
+                        author={book.volumeInfo.author}
                         thumbnail={book.thumbnail}
                       />
                     );
@@ -110,9 +120,9 @@ class Books extends Component {
             <Jumbotron>
               <h1>Saved Books</h1>
             </Jumbotron>
-            {this.state.books.length ? (
+            {this.state.favBooks.length ? (
               <List>
-                {this.state.books.map(book => (
+                {this.state.favBooks.map(book => (
                   <ListItem key={book._id}>
                     <a href={"/books/" + book._id}>
                       <strong>
