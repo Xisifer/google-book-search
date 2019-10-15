@@ -1,5 +1,5 @@
 import React from "react";
-// import Thumbnail from "../Thumbnail";
+import Thumbnail from "../Thumbnail";
 import { Container, Row, Col } from "../Grid";
 
 // Exporting both RecipeList and RecipeListItem from this file
@@ -13,7 +13,7 @@ export function BookList({ children }) {
 export function BookListItem({
   thumbnail = "https://placehold.it/300x300",
   title,
-  ingredients,
+  authors,
   href
 }) {
   return (
@@ -21,11 +21,11 @@ export function BookListItem({
       <Container>
         <Row>
           <Col size="xs-4 sm-2">
-            {/* <Thumbnail src={thumbnail} /> */}
+            <Thumbnail src={thumbnail} />
           </Col>
           <Col size="xs-8 sm-9">
             <h3>{title}</h3>
-            <p>Ingredients: {ingredients}</p>
+            <p>Author: {authors}</p>
             <a rel="noreferrer noopener" target="_blank" href={href}>
               Go to Book!!
             </a>

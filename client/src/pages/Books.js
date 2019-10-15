@@ -11,7 +11,7 @@ import { BookList, BookListItem } from "../components/BookList";
 
 class Books extends Component {
   state = {
-    favBooks: [],
+    books: [],
     favBooks: [],
     bookSearch: ""
   };
@@ -22,13 +22,13 @@ class Books extends Component {
 
   loadBooks = () => {
     API.getBooks()
-      .then(res => this.setState({ books: res.data }))
+      .then(res => this.setState({ favBooks: res.data }))
       .catch(err => console.log(err));
   };
 
   searchBooks = (searchQuery) => {
     API.searchBooks(searchQuery)
-      .then(res => this.setState({ favBooks: res.data }))
+      .then(res => this.setState({ books: res.data }))
       .catch(err => console.log(err));
   }
 
@@ -53,9 +53,12 @@ class Books extends Component {
   handleFormSubmit = (event) => {
     // When the form is submitted, prevent its default behavior, get recipes update the recipes state
     event.preventDefault();
-    console.log(this.state.favBooks);
+    console.log(this.state.books);
     API.searchBooks(this.state.bookSearch)
-      .then(res => this.setState({ books: res.data }))
+      .then(res => {
+        console.log(res.data)
+        this.setState({ books: res.data })
+      })
       .catch(err => console.log(err));
   };
 
@@ -95,18 +98,18 @@ class Books extends Component {
             <Jumbotron>
               <h1>Search Results</h1>
             </Jumbotron>
-              {!this.state.favBooks.length ? (
+              {!this.state.books.length ? (
                 <h1 className="text-center">No Results to Display</h1>
               ) : (
                 <BookList>
-                  {this.state.favBooks.map(book => {
+                  {this.state.books.map(book => {
                     return (
                       <BookListItem
                         key={book.id}
                         title={book.volumeInfo.title}
                         href={book.href}
-                        author={book.volumeInfo.author}
-                        thumbnail={book.thumbnail}
+                        authors={book.volumeInfo.authors}
+                        thumbnail={book.volumeInfo.imageLinks.thumbnail}
                       />
                     );
                   })}
