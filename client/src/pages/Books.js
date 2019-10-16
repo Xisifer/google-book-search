@@ -32,14 +32,6 @@ class Books extends Component {
       .catch(err => console.log(err));
   }
 
-  // handleInputChange = event => {
-  //   // Destructure the name and value properties off of event.target
-  //   // Update the appropriate state
-  //   const { name, value } = event.target;
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // };
 
   handleInputChange = event => {
     // Destructure the name and value properties off of event.target
@@ -54,6 +46,18 @@ class Books extends Component {
     // When the form is submitted, prevent its default behavior, get recipes update the recipes state
     event.preventDefault();
     console.log(this.state.books);
+    API.searchBooks(this.state.bookSearch)
+      .then(res => {
+        console.log(res.data)
+        this.setState({ books: res.data })
+      })
+      .catch(err => console.log(err));
+  };
+
+  addFavorite = (event) => {
+    // When the form is submitted, prevent its default behavior, get recipes update the recipes state
+    event.preventDefault();
+    console.log(this.state.favBooks);
     API.searchBooks(this.state.bookSearch)
       .then(res => {
         console.log(res.data)
@@ -83,12 +87,7 @@ class Books extends Component {
             >
               Search
             </Button>
-            {/* <form> */}
-              {/* <Input name="title" placeholder="Title (required)" /> */}
-              {/* <Input name="author" placeholder="Author (required)" /> */}
-              {/* <TextArea name="synopsis" placeholder="Synopsis (Optional)" /> */}
-              {/* <FormBtn>Search for Book</FormBtn> */}
-            {/* </form> */}
+
             
           </Col>
 
@@ -103,14 +102,19 @@ class Books extends Component {
               ) : (
                 <BookList>
                   {this.state.books.map(book => {
+                    // Attempting to add in a catch just in case the book's thumbnail comes back as undefined.
+                    // if (book.volumeInfo.imageLinks.thumbnail === undefined) {
+                    //   return book.volumeInfo.imageLinks.thumbnail = "https://i.imgur.com/LwSai1H.jpg"
+                    // }
                     return (
                       <BookListItem
                         key={book.id}
                         title={book.volumeInfo.title}
-                        href={book.href}
+                        href={book.volumeInfo.infoLink}
                         authors={book.volumeInfo.authors}
                         thumbnail={book.volumeInfo.imageLinks.thumbnail}
                       />
+
                     );
                   })}
                 </BookList>
