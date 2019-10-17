@@ -17,7 +17,7 @@ class Books extends Component {
   };
 
   componentDidMount = () => {
-    // this.loadBooks();
+    this.loadBooks();
   }
 
   loadBooks = () => {
@@ -25,10 +25,23 @@ class Books extends Component {
       .then(res => this.setState({ favBooks: res.data }))
       .catch(err => console.log(err));
   };
-
+// Need to add the book to State upon add
   searchBooks = (searchQuery) => {
     API.searchBooks(searchQuery)
       .then(res => this.setState({ books: res.data }))
+      .catch(err => console.log(err));
+  }
+// Gotta PUSH it to the state, not set the state. Get books form state, then push into books, then set state with the updated array
+  deleteBook = (id) => {
+    API.deleteBook(id)
+    .then(res => this.setState({ books: res.data })) // Needs changing!
+    .catch(err => console.log(err));
+  }
+
+  addFavorite = (bookDetails) => {
+    console.log(`Adding ${bookDetails.title} to Favorites!`);
+    API.saveBook(bookDetails)
+      .then(res => this.setState({ favBooks: res.data }))
       .catch(err => console.log(err));
   }
 
@@ -54,17 +67,17 @@ class Books extends Component {
       .catch(err => console.log(err));
   };
 
-  addFavorite = (event) => {
-    // When the form is submitted, prevent its default behavior, get recipes update the recipes state
-    event.preventDefault();
-    console.log(this.state.favBooks);
-    API.searchBooks(this.state.bookSearch)
-      .then(res => {
-        console.log(res.data)
-        this.setState({ books: res.data })
-      })
-      .catch(err => console.log(err));
-  };
+  // addFavorite = () => {
+  //   // When the form is submitted, prevent its default behavior, get recipes update the recipes state
+  //   // event.preventDefault();
+  //   console.log(this.state.favBooks);
+  //   API.searchBooks(this.state.bookSearch)
+  //     .then(res => {
+  //       console.log(res.data)
+  //       this.setState({ books: res.data })
+  //     })
+  //     .catch(err => console.log(err));
+  // };
 
   render() {
     return (
@@ -103,16 +116,21 @@ class Books extends Component {
                 <BookList>
                   {this.state.books.map(book => {
                     // Attempting to add in a catch just in case the book's thumbnail comes back as undefined.
-                    // if (book.volumeInfo.imageLinks.thumbnail === undefined) {
-                    //   return book.volumeInfo.imageLinks.thumbnail = "https://i.imgur.com/LwSai1H.jpg"
-                    // }
+                    if (book.volumeInfo.imageLinks === undefined) {
+                      book.volumeInfo.imageLinks = {
+                        thumbnail: "https://i.imgur.com/LwSai1H.jpg"
+                      }
+                    }
                     return (
                       <BookListItem
                         key={book.id}
+                        bookid={book.id}
                         title={book.volumeInfo.title}
                         href={book.volumeInfo.infoLink}
+                        description={book.volumeInfo.description}
                         authors={book.volumeInfo.authors}
                         thumbnail={book.volumeInfo.imageLinks.thumbnail}
+                        addFavorite = {this.addFavorite}
                       />
 
                     );
@@ -137,7 +155,9 @@ class Books extends Component {
                         {book.image}
                       </strong>
                     </a>
-                    <DeleteBtn />
+                    <DeleteBtn
+                    deleteBook = { () => this.deleteBook(book._id)} 
+                    />
                   </ListItem>
                 ))}
               </List>
