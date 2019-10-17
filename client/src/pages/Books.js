@@ -8,6 +8,11 @@ import { Input } from "../components/Form";
 // import { TextArea, FormBtn } from "../components/Form";
 import Button from "../components/Button";
 import { BookList, BookListItem } from "../components/BookList";
+import Thumbnail from "../components/Thumbnail";
+// import BookSearch from "../pages/bookSearch.js";
+import "./style.css";
+
+
 
 class Books extends Component {
   state = {
@@ -28,21 +33,24 @@ class Books extends Component {
 // Need to add the book to State upon add
   searchBooks = (searchQuery) => {
     API.searchBooks(searchQuery)
-      .then(res => this.setState({ books: res.data }))
+      .then(res => this.setState({ books: res.data }, this.loadBooks()))
       .catch(err => console.log(err));
   }
-// Gotta PUSH it to the state, not set the state. Get books form state, then push into books, then set state with the updated array
+// Gotta PUSH it to the state, not set the state. Get books from state, then push into books, then set state with the updated array
   deleteBook = (id) => {
     API.deleteBook(id)
-    .then(res => this.setState({ books: res.data })) // Needs changing!
+    .then(res => this.setState({ books: res.data }, this.loadBooks())) 
     .catch(err => console.log(err));
   }
 
   addFavorite = (bookDetails) => {
+
     console.log(`Adding ${bookDetails.title} to Favorites!`);
     API.saveBook(bookDetails)
-      .then(res => this.setState({ favBooks: res.data }))
+    // calling loadBooks() as a callback function, so that once the State se set with the response data, we manually tell it to load the books again!
+      .then(res => this.setState({ favBooks: res.data }, this.loadBooks()))
       .catch(err => console.log(err));
+      return(this.state);
   }
 
 
@@ -83,6 +91,7 @@ class Books extends Component {
     return (
       <Container fluid>
         <Row>
+          {/* <BookSearch /> */}
           <Col size="md-4">
             <Jumbotron>
               <h1>Search for a Book!</h1>
@@ -131,6 +140,7 @@ class Books extends Component {
                         authors={book.volumeInfo.authors}
                         thumbnail={book.volumeInfo.imageLinks.thumbnail}
                         addFavorite = {this.addFavorite}
+                        onChange = {this.forceUpdate}
                       />
 
                     );
@@ -151,8 +161,8 @@ class Books extends Component {
                   <ListItem key={book._id}>
                     <a href={"/books/" + book._id}>
                       <strong>
-                        {book.title} by {book.author}
-                        {book.image}
+                      {/* <Thumbnail src={book.thumbnail} /> */}
+                        {book.title} by {book.authors}
                       </strong>
                     </a>
                     <DeleteBtn

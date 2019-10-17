@@ -1,0 +1,23 @@
+#navbarBrand {
+    color:white;
+    text-align: center;
+    margin-left: 35%;
+    padding: 4rem;
+    background-color: rgba(0,120,255,0.7);
+}
+.bg-primary {
+    background-color: dodgerblue !important;
+    background-image:url("../../assets/images/bookshelf.jpg");
+    background-size:cover;
+}
+element.style.jumbotron {
+    padding-top:50px;
+    height:120px;
+}
+
+/* #bookSearch-btn {
+    color:green;
+}
+#favList-btn {
+    color:purple;
+} */
