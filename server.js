@@ -17,9 +17,12 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
+
+
+
 // ======================================
 // MongoDB Setup!!
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/favoritebooks";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://<dbuser>:<dbpassword>@ds237308.mlab.com:37308/heroku_3rvvgrck";
  
 mongoose.connect(MONGODB_URI); 
 // =========================================
@@ -33,3 +36,6 @@ mongoose.connect(MONGODB_URI);
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
 });
+
+
+
