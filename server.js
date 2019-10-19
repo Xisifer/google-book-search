@@ -17,9 +17,17 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
+// ======================================
+// MongoDB Setup!!
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/favoritebooks";
+ 
+mongoose.connect(MONGODB_URI); 
+// =========================================
+
+
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/favoritebooks");
+// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/favoritebooks");
 
 // Start the API server
 app.listen(PORT, function() {
