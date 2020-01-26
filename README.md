@@ -1,29 +1,9 @@
-# Create React Express App
+## What is google-book-search?
 
-## About This Boilerplate
+A Full-Stack web application (created via create-react-app) that allows the user to search the Google Books API for a book title that they want. This returns a thumbnail of the book cover, a link to the actual Google Books search result for that specific book, and also has a button for adding that book for a Favorites system.
 
-This setup allows for a Node/Express/React app which can be easily deployed to Heroku.
+The user's Favorites are stored on a (MongoDB) server that persists between page Refreshes. The user is then able to delete books from the Favorites List, at which point the DOM is rendered to update that view.
 
-The front-end React app will auto-reload as it's updated via webpack dev server, and the backend Express app will auto-reload independently with nodemon.
+## Deployed Application:
 
-## Starting the app locally
-
-Start by installing front and backend dependencies. While in this directory, run the following command:
-
-```
-npm install
-```
-
-This should install node modules within the server and the client folder.
-
-After both installations complete, run the following command in your terminal:
-
-```
-npm start
-```
-
-Your app should now be running on <http://localhost:3000>. The Express server should intercept any AJAX requests from the client.
-
-## Deployment (Heroku)
-
-To deploy, simply add and commit your changes, and push to Heroku. As is, the NPM scripts should take care of the rest.
+ https://google-book-favs.herokuapp.com/
