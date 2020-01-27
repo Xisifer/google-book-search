@@ -4,6 +4,8 @@ A Full-Stack web application (created via create-react-app) that allows the user
 
 The user's Favorites are stored on a (MongoDB) server that persists between page Refreshes. The user is then able to delete books from the Favorites List, at which point the DOM is rendered to update that view.
 
+![screenshot](https://i.imgur.com/3WcGqcD.png)
+
 ## Deployed Application:
 
  https://google-book-favs.herokuapp.com/
